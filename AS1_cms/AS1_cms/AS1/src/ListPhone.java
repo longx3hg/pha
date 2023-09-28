@@ -78,20 +78,20 @@ public class ListPhone {
             //insert x before first Phone has max price.
             return null;
         }
-
+        Node maxNode;
         Node maxPrev = null;
-        Node maxNode = head;
         Node current = head;
         double maxPrice = head.inf.price;
-        ArrayList<Integer> maxIndex = new ArrayList<>(); //store index of node that has max price
-        int nodeIndex = 1;
+        ArrayList<Node> maxNodes = new ArrayList<>(); //store nodes that has max price
         //traverse the list to find the node has max price
         while (current.next != null) {
+
+
             if (current.next.inf.price > maxPrice) {
                 maxPrice = current.next.inf.price;
                 maxPrev = current;
                 maxNode = current.next;
-                nodeIndex += 1;
+                maxNodes.add(maxNode);
             }
             current = current.next;
         }
@@ -101,7 +101,8 @@ public class ListPhone {
             newNode.next = head;
             head = newNode;
         } else {
-            newNode.next = maxNode;
+            //insert node before the first node has max price
+            newNode.next = maxNodes.get(0);
             maxPrev.next = newNode;
         }
         //update tail
@@ -116,7 +117,53 @@ public class ListPhone {
     Node f4_InsertAfter() {
         //insert x after last Phone has max price.        
         Phone x = new Phone("Iphone", "X", 0);
-        return null;
+        Node newNode = new Node(x);
+
+        if (head == null) {
+            //insert x before first Phone has max price.
+            return null;
+        }
+
+        Node maxPrev = null;
+        Node maxNode = head;
+        Node current = head;
+        double maxPrice = head.inf.price;
+        ArrayList<Node> maxNodes = new ArrayList<>(); //store nodes that has max price
+        //traverse the list to find the node has max price
+        while (current.next != null) {
+            if (current.next.inf.price >= maxPrice) {
+                maxPrice = current.next.inf.price;
+                maxPrev = current;
+                maxNode = current.next;
+                maxNodes.add(maxNode);
+            }
+            current = current.next;
+        }
+        
+        //last operation will 
+        //if there's only one node
+        if (maxPrev == null) {
+            head.next = maxNodes.get(maxNodes.size() - 1);
+        } else {
+            //insert node to after the last node that has max price
+            current = head;
+            maxNode = maxNodes.get(maxNodes.size() - 1);
+
+            while (current != null) {
+                if (current == maxNode) {
+                    newNode.next = current.next;
+                    current.next = newNode;
+                }
+                current = current.next;
+            }
+        }
+        //update tail
+        Node traverse = head;
+        while (traverse.next != null) {
+            traverse = traverse.next;
+        }
+        tail = traverse;
+        return head;
     }
 
     Node f5_removeOne() {
